@@ -2,24 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pool : MonoBehaviour
+public class Pool
 {
-    [SerializeField] private int _poolCapacity = 30;
-    public int Capacity { get{return _poolCapacity;} }
-    private Transform _parent;
+    readonly int _poolCapacity;
+    private Transform _parent, _prefab;    
     private Queue<GameObject> _pool;
+    private GameObject _temp;
 
-    private void Init(Transform parent, int capacity)
+    public Pool(GameObject prefab, int capacity, Transform parent = null)
     {
         _poolCapacity = capacity;
+        _prefab = prefab.transform;
         _pool = new Queue<GameObject>(_poolCapacity);
-        _parent = parent;
+        if (parent != null)
+        {
+            _parent = parent;
+        }
+        else
+        {
+            _parent = new GameObject(prefab.name + "sPool").transform;
+            _parent.Translate(Vector3.zero);
+        }
+        for (int i = 0; i < capacity; i++)
+        {
+            _pool.Enqueue(GameObject.Instantiate(prefab, _parent));
+        }
+
     }
 
     public bool Push(GameObject item)
     {
         if (_pool.Count <= _poolCapacity)
         {
+            item.transform.rotation = _prefab.rotation;
+            item.transform.position = _prefab.position;
             item.transform.parent = _parent;
             item.SetActive(false);
             _pool.Enqueue(item);
@@ -35,9 +51,9 @@ public class Pool : MonoBehaviour
     {
         if (_pool.Count != 0)
         {
-            GameObject temp = _pool.Dequeue();
-            temp.SetActive(true);
-            return temp;
+            _temp = _pool.Dequeue();
+            _temp.SetActive(true);
+            return _temp;
         }
         else
         {

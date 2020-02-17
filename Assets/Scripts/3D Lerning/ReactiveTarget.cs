@@ -6,7 +6,13 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class ReactiveTarget : MonoBehaviour
 {
-    public UnityEvent OnHit;
+    [HideInInspector] public UnityEvent OnHit;
+    private SceneController controller;
+
+    private void Start()
+    {
+        controller = GameObject.Find("GameController").GetComponent<SceneController>();
+    }
     public void ReactToHit()
     {
         OnHit.Invoke();
@@ -17,6 +23,10 @@ public class ReactiveTarget : MonoBehaviour
     private IEnumerator Die()
     {
         yield return new WaitForSeconds(1.5f);
-        this.gameObject.SetActive(false);
+        // GetComponent<Rigidbody>().freezeRotation = true;
+        if (!controller.enemyPool.Push(this.gameObject))
+        {
+            GameObject.Destroy(this.gameObject);
+        }
     }
 }
