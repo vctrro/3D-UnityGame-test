@@ -8,7 +8,6 @@ public class MiniMapControl : MonoBehaviour
     private void Start()
     {
         _player = GameObject.Find("Player").transform;
-        transform.up = _player.forward;
     }
 
     void Update()
