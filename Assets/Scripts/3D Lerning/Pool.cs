@@ -6,7 +6,7 @@ public class Pool
 {
     readonly int _poolCapacity;
     private Transform _parent, _prefab;    
-    private Queue<GameObject> _pool;
+    public Queue<GameObject> _pool;
     private GameObject _temp;
 
     public Pool(GameObject prefab, int capacity, Transform parent = null)
@@ -25,7 +25,9 @@ public class Pool
         }
         for (int i = 0; i < capacity; i++)
         {
-            _pool.Enqueue(GameObject.Instantiate(prefab, _parent));
+            _temp = GameObject.Instantiate(prefab, _parent);
+            _temp.SetActive(false);
+            _pool.Enqueue(_temp);
         }
 
     }
@@ -38,6 +40,10 @@ public class Pool
             item.transform.position = _prefab.position;
             item.transform.parent = _parent;
             item.SetActive(false);
+            for (int i = 0; i < item.transform.childCount; i++)
+            {
+                item.transform.GetChild(i).gameObject.SetActive(false);
+            }
             _pool.Enqueue(item);
             return true;
         }
@@ -53,6 +59,10 @@ public class Pool
         {
             _temp = _pool.Dequeue();
             _temp.SetActive(true);
+            for (int i = 0; i < _temp.transform.childCount; i++)
+            {
+                _temp.transform.GetChild(i).gameObject.SetActive(true);
+            }
             return _temp;
         }
         else

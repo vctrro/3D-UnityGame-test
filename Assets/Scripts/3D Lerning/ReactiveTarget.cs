@@ -18,15 +18,17 @@ public class ReactiveTarget : MonoBehaviour
         OnHit.Invoke();
         GetComponent<Rigidbody>().freezeRotation = false;
         StartCoroutine(Die());
+        controller.OnDead();
     }
 
     private IEnumerator Die()
     {
-        yield return new WaitForSeconds(1.5f);
-        // GetComponent<Rigidbody>().freezeRotation = true;
+        yield return new WaitForSeconds(2.0f);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         if (!controller.enemyPool.Push(this.gameObject))
         {
             GameObject.Destroy(this.gameObject);
         }
+        Debug.Log($"Pool count = {controller.enemyPool._pool.Count}");
     }
 }

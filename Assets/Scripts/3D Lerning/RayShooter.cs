@@ -9,6 +9,7 @@ public class RayShooter : MonoBehaviour
     private ReactiveTarget _target;
     private GameObject _targetObject;
     private float _hitForce = 3.0f;
+    private float _defeatDistance = 50f;
 
     private void Start()
     {
@@ -25,7 +26,7 @@ public class RayShooter : MonoBehaviour
             Vector3 point = new Vector3(_camera.pixelWidth/2, _camera.pixelHeight/2, 0);
             Ray ray = _camera.ScreenPointToRay(point);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, _defeatDistance, /* default layer */ 1, QueryTriggerInteraction.Ignore))
             {
                 _targetObject = hit.transform.gameObject;
                 _target = _targetObject.GetComponent<ReactiveTarget>();
