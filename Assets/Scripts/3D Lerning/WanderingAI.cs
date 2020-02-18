@@ -19,9 +19,8 @@ public class WanderingAI : MonoBehaviour
         _attackSpeed = speed * 2.5f;
         GetComponent<ReactiveTarget>().OnHit.AddListener(SetAlive);
         EnemyTrigger temp = GetComponentInChildren<EnemyTrigger>();
-        Debug.Log(temp);
+        temp.OnTargetLost.AddListener(()=>{_attack = false;});
         temp.OnTargetDetected.AddListener((target)=>{_targetAttack = target; _attack = true;});
-        temp.OnTargetLost.AddListener(SetAlive);
     }
 
     private void Update()
@@ -49,6 +48,5 @@ public class WanderingAI : MonoBehaviour
     {
         if (!_alive) return;
         _alive = false;
-        Debug.Log("Enemy dead");
     }
 }

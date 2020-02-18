@@ -8,7 +8,7 @@ public class RayShooter : MonoBehaviour
     private Camera _camera;
     private ReactiveTarget _target;
     private GameObject _targetObject;
-    private float _hitForce = 3.0f;
+    private float _hitForce = 7.0f;
     private float _defeatDistance = 50f;
 
     private void Start()
@@ -32,7 +32,6 @@ public class RayShooter : MonoBehaviour
                 _target = _targetObject.GetComponent<ReactiveTarget>();
                 if (_target != null)
                 {
-                    Debug.Log($"Target hit in {hit.point}");
                     _target.ReactToHit();
                     hit.rigidbody.AddForce(ray.direction * _hitForce);
                 }

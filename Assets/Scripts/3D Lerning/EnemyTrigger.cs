@@ -5,23 +5,29 @@ using UnityEngine.Events;
 
 public class EnemyTrigger : MonoBehaviour
 {
-    [HideInInspector] public UnityEvent<Vector3> OnTargetDetected;
+    [HideInInspector] public OnTriggerDetected OnTargetDetected;
     [HideInInspector] public UnityEvent OnTargetLost;
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.name == "Player")
+        if (Physics.Linecast(transform.position, other.transform.position, LayerMask.GetMask("Default")))  //если что-то есть между ним и целью
         {
-            RaycastHit hit;
-            Physics.Linecast(transform.position, other.transform.position, out hit);
-            if (hit.collider.gameObject.name == "Player")
-            {
-                OnTargetDetected.Invoke(other.transform.position);
-            }
-            else
-            {
-                OnTargetLost.Invoke();
-            }
+            OnTargetLost.Invoke();
         }
+        else
+        {
+            OnTargetDetected.Invoke(other.transform.position);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        OnTargetLost.Invoke();
+    }
+
+    [System.Serializable]
+    public class OnTriggerDetected : UnityEvent<Vector3>
+    {
+
     }
 }
