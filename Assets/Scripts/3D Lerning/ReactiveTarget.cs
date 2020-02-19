@@ -7,7 +7,13 @@ using UnityEngine.Events;
 public class ReactiveTarget : MonoBehaviour
 {
     [HideInInspector] public UnityEvent OnHit;
+    [HideInInspector] public UnityEvent OnDead;
     private SceneController controller;
+
+    private void OnEnable()
+    {
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;        
+    }
 
     private void Start()
     {
@@ -18,17 +24,15 @@ public class ReactiveTarget : MonoBehaviour
         OnHit.Invoke();
         GetComponent<Rigidbody>().freezeRotation = false;
         StartCoroutine(Die());
-        controller.OnDead();
     }
 
     private IEnumerator Die()
     {
         yield return new WaitForSeconds(2.0f);
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         if (!controller.enemyPool.Push(this.gameObject))
         {
             GameObject.Destroy(this.gameObject);
         }
-        Debug.Log($"Pool count = {controller.enemyPool._pool.Count}");
+        OnDead.Invoke();
     }
 }

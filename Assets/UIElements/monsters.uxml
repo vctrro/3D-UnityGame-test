@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="game-screen" style="flex-direction: row; justify-content: space-between; flex-grow: 1;">
+        <Style src="monsters.uss" />
+        <ui:VisualElement name="left" style="align-items: flex-start; justify-content: center;" />
+        <ui:VisualElement name="right" style="align-items: flex-end; flex-grow: 0; justify-content: flex-start; flex-basis: 310px; margin-top: 30px; margin-right: 30px; overflow: visible;">
+            <ui:VisualElement name="monster-avatar" style="background-image: url('/Assets/Art/monster.png'); min-width: 160px; min-height: 160px; overflow: visible; visibility: visible; display: flex; flex-wrap: no-wrap; position: absolute; left: 0; top: 0; align-items: flex-start;" />
+            <ui:VisualElement name="monster-count" style="background-image: url('/Assets/Art/circle-border-red.png'); overflow: visible; min-width: 160px; min-height: 160px; top: 100px; position: absolute; -unity-text-align: middle-center; justify-content: flex-end; align-items: stretch;">
+                <ui:Label text="10" style="align-items: center; flex-grow: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 140px; -unity-font: url('/Assets/Fonts/soupofjustice.ttf'); color: rgb(255, 0, 0); -unity-text-align: middle-center; white-space: no-wrap; justify-content: flex-end; -unity-background-image-tint-color: rgb(0, 0, 0); -unity-background-scale-mode: stretch-to-fill;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

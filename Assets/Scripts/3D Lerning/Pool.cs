@@ -5,9 +5,9 @@ using UnityEngine;
 public class Pool
 {
     readonly int _poolCapacity;
+    public int PoolCount {get; private set;}
     private Transform _parent, _prefab;    
-    public Queue<GameObject> _pool;
-    private GameObject _temp;
+    private Queue<GameObject> _pool;
 
     public Pool(GameObject prefab, int capacity, Transform parent = null)
     {
@@ -25,11 +25,11 @@ public class Pool
         }
         for (int i = 0; i < capacity; i++)
         {
-            _temp = GameObject.Instantiate(prefab, _parent);
-            _temp.SetActive(false);
-            _pool.Enqueue(_temp);
+            var temp = GameObject.Instantiate(prefab, _parent);
+            temp.SetActive(false);
+            _pool.Enqueue(temp);
+            PoolCount++;
         }
-
     }
 
     public bool Push(GameObject item)
@@ -40,11 +40,12 @@ public class Pool
             item.transform.position = _prefab.position;
             item.transform.parent = _parent;
             item.SetActive(false);
-            for (int i = 0; i < item.transform.childCount; i++)
-            {
-                item.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            // for (int i = 0; i < item.transform.childCount; i++)
+            // {
+            //     item.transform.GetChild(i).gameObject.SetActive(false);
+            // }
             _pool.Enqueue(item);
+            PoolCount++;
             return true;
         }
         else
@@ -57,13 +58,14 @@ public class Pool
     {
         if (_pool.Count != 0)
         {
-            _temp = _pool.Dequeue();
-            _temp.SetActive(true);
-            for (int i = 0; i < _temp.transform.childCount; i++)
-            {
-                _temp.transform.GetChild(i).gameObject.SetActive(true);
-            }
-            return _temp;
+            var temp = _pool.Dequeue();
+            temp.SetActive(true);
+            // for (int i = 0; i < _temp.transform.childCount; i++)
+            // {
+            //     _temp.transform.GetChild(i).gameObject.SetActive(true);
+            // }
+            PoolCount--;
+            return temp;
         }
         else
         {

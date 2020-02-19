@@ -6,8 +6,6 @@ public class RayShooter : MonoBehaviour
 {
     [SerializeField] public AudioSource shootSound;
     private Camera _camera;
-    private ReactiveTarget _target;
-    private GameObject _targetObject;
     private float _hitForce = 7.0f;
     private float _defeatDistance = 50f;
 
@@ -28,8 +26,7 @@ public class RayShooter : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, _defeatDistance, /* default layer */ 1, QueryTriggerInteraction.Ignore))
             {
-                _targetObject = hit.transform.gameObject;
-                _target = _targetObject.GetComponent<ReactiveTarget>();
+                var _target = hit.transform.GetComponent<ReactiveTarget>();
                 if (_target != null)
                 {
                     _target.ReactToHit();
@@ -41,7 +38,7 @@ public class RayShooter : MonoBehaviour
     }
 
     private void OnGUI() {
-        int size = 12;
+        int size = 14;
         float posX = _camera.pixelWidth/2 - size/4;
         float posY = _camera.pixelHeight/2 -size/2;
         GUI.Label(new Rect(posX, posY, size, size), "*");

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class WanderingAI : MonoBehaviour
 {
-    [SerializeField] private float speed = 3.0f;
-    [SerializeField] private float obstacleRange = 7.0f;
+    [SerializeField] private float _speed = 3.0f, _attackSpeed = 7.0f;
+    [SerializeField] private float _obstacleRange = 7.0f;
     private bool _alive, _attack;
-    private float _attackSpeed;
     private Vector3 _targetAttack;
 
     private void OnEnable()
@@ -16,11 +15,10 @@ public class WanderingAI : MonoBehaviour
     }
     private void Start()
     {
-        _attackSpeed = speed * 2.5f;
         GetComponent<ReactiveTarget>().OnHit.AddListener(SetAlive);
         EnemyTrigger temp = GetComponentInChildren<EnemyTrigger>();
         temp.OnTargetLost.AddListener(()=>{_attack = false;});
-        temp.OnTargetDetected.AddListener((target)=>{_targetAttack = target; _attack = true;});
+        temp.OnTargetDetected.AddListener(target=>{_targetAttack = target; _attack = true;});
     }
 
     private void Update()
@@ -33,10 +31,10 @@ public class WanderingAI : MonoBehaviour
         }
         else
         {
-            transform.Translate(0, 0, speed * Time.deltaTime);
+            transform.Translate(0, 0, _speed * Time.deltaTime);
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
-            if (Physics.SphereCast(ray, this.GetComponent<CapsuleCollider>().radius * this.transform.localScale.y, out hit, obstacleRange))
+            if (Physics.SphereCast(ray, this.GetComponent<CapsuleCollider>().radius * this.transform.localScale.y, out hit, _obstacleRange))
             {
                 float angle = Random.Range(-110, 110);
                 transform.Rotate(0, angle, 0);
