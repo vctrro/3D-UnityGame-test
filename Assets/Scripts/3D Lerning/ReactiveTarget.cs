@@ -22,6 +22,7 @@ public class ReactiveTarget : MonoBehaviour
     public void ReactToHit()
     {
         OnHit.Invoke();
+        GetComponent<AudioSource>().Stop();
         GetComponent<Rigidbody>().freezeRotation = false;
         StartCoroutine(Die());
     }

@@ -6,6 +6,7 @@ public class WanderingAI : MonoBehaviour
 {
     [SerializeField] private float _speed = 3.0f, _attackSpeed = 7.0f;
     [SerializeField] private float _obstacleRange = 7.0f;
+    [SerializeField] private AudioSource _attackSound;
     private bool _alive, _attack;
     private Vector3 _targetAttack;
 
@@ -17,8 +18,8 @@ public class WanderingAI : MonoBehaviour
     {
         GetComponent<ReactiveTarget>().OnHit.AddListener(SetAlive);
         EnemyTrigger temp = GetComponentInChildren<EnemyTrigger>();
-        temp.OnTargetLost.AddListener(()=>{_attack = false;});
-        temp.OnTargetDetected.AddListener(target=>{_targetAttack = target; _attack = true;});
+        temp.OnTargetLost.AddListener(()=>{_attack = false; _attackSound.Stop();});
+        temp.OnTargetDetected.AddListener(target=>{_targetAttack = target; _attack = true; _attackSound.Play();});
     }
 
     private void Update()
