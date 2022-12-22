@@ -15,8 +15,8 @@ TagManager:
   - 
   - EnemyTrigger
   - Player
-  - 
-  - 
+  - Enemy
+  - PlayerCollider
   - 
   - 
   - 

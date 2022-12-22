@@ -11,20 +11,25 @@ public class MouseLook : MonoBehaviour
         MouseY = 2
     }
     [SerializeField] private RotationAxes axes = RotationAxes.MouseXAndY;
+    [SerializeField] private SceneController sceneController;
     [SerializeField] private float sensitivityHor = 6.0f;
     [SerializeField] private float sensitivityVert = 6.0f;
     private float _minVert = -45.0f;
     private float _maxVert = 45.0f;
     private float _rotationX = 0;
+    private bool gameOver = false;
+
     private void Start()
     {
         Rigidbody body = GetComponent<Rigidbody>();
         if (body != null)
             body.freezeRotation = true;
+        sceneController.OnGameOver.AddListener(() => gameOver = true);
     }
 
     private void Update()
     {
+        if (gameOver) return;
         if (axes == RotationAxes.MouseX)
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
