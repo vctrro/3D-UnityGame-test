@@ -10,17 +10,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!recivedHit)
-        {
-            recivedHit = true;
-            OnHit.Invoke();
-            StartCoroutine(RecivedHit());
-        }
-     }
+
+        recivedHit = true;
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        OnHit.Invoke();
+        StartCoroutine(RecivedHit());
+
+    }
 
     private IEnumerator RecivedHit()
     {
-        yield return new WaitForSeconds(1f);
-        recivedHit = false;
+        Debug.Log(recivedHit);
+        yield return new WaitForSeconds(3f);
+        //recivedHit = false;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 }
