@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -21,6 +22,10 @@
 
 # Visual Studio cache directory
 .vs/
+
+# Macos
+.DS_Store
+._*
 
 # Gradle cache directory
 .gradle/
@@ -59,4 +64,3 @@ sysinfo.txt
 crashlytics-build.properties
 
 .vsconfig
-**/.DS_Store
